@@ -104,7 +104,7 @@ class Invoice(TimeStampedUUIDModel):
     subtotal = models.DecimalField(max_digits=12, decimal_places=2)
     tax_amount = models.DecimalField(max_digits=12, decimal_places=2)
     total_amount = models.DecimalField(max_digits=12, decimal_places=2)
-    amount_paid = models.DecimalField(max_digits=12, decimal_places=2, default=0.00)
+    amount_paid = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal('0.00'))
     payment_status = models.CharField(max_length=32, choices=PAYMENT_STATUS_CHOICES, default='UNPAID')
 
     def __str__(self):

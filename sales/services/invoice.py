@@ -1,4 +1,5 @@
 from django.db import transaction
+from django.utils import timezone
 from decimal import Decimal
 from ..models import Invoice, PaymentRecord
 
@@ -16,7 +17,7 @@ class InvoicingService:
             payment_date=timezone.now().date(),
             transaction_reference=ref_no
         )
-        invoice.amount_paid += amount
+        invoice.amount_paid = Decimal(str(invoice.amount_paid)) + Decimal(str(amount))
         if invoice.amount_paid >= invoice.total_amount:
             invoice.payment_status = 'PAID'
         elif invoice.amount_paid > 0:

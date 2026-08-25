@@ -87,7 +87,7 @@ class DisplaySpec(TimeStampedUUIDModel):
 
     def __str__(self):
         touch = " Touch" if self.is_touchscreen else ""
-        return f"{self.size_inches}" {self.resolution} {self.panel_type}{touch} ({self.refresh_rate_hz}Hz)"
+        return f"{self.size_inches}in {self.resolution} {self.panel_type}{touch} ({self.refresh_rate_hz}Hz)"
 
 
 class GpuSpec(TimeStampedUUIDModel):
