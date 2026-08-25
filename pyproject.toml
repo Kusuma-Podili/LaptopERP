@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "laptoperp"
+version = "1.0.0"
+description = "Enterprise Laptop Lifecycle & Hardware ERP Platform"
+authors = ["Kusuma Podili <podilikusuma15@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+Django = "^5.2.0"
+djangorestframework = "^3.14.0"
+django-filter = "^23.5"
+Pillow = "^10.0.0"
+openpyxl = "^3.1.2"
+reportlab = "^4.0.0"
+qrcode = "^7.4.2"
+
+[tool.poetry.dev-dependencies]
+pytest = "^7.4.0"
+pytest-django = "^4.5.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

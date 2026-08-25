@@ -1,0 +1,21 @@
+{
+  "name": "laptoperp",
+  "version": "1.0.0",
+  "description": "Enterprise Laptop Lifecycle & Hardware ERP Platform",
+  "main": "static/js/erp_core.js",
+  "scripts": {
+    "build": "echo 'Building static assets...'",
+    "test": "echo 'Testing frontend assets...'"
+  },
+  "author": "kusuma-podili <podilikusuma15@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "bootstrap": "^5.3.2",
+    "bootstrap-icons": "^1.11.2",
+    "chart.js": "^4.4.1"
+  },
+  "devDependencies": {
+    "cssnano": "^6.0.2",
+    "terser": "^5.26.0"
+  }
+}
