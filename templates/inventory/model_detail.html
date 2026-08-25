@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}{{ model.model_name }} - Specs & Units{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h3 class="fw-bold mb-1">{{ model.brand.name }} {{ model.model_name }}</h3>
+        <p class="text-muted mb-0">Part SKU: <code>{{ model.model_number }}</code> | Category: <span class="badge bg-secondary">{{ model.category.name }}</span></p>
+    </div>
+    <a href="{% url 'inventory:model_list' %}" class="btn btn-outline-secondary btn-sm"><i class="bi bi-arrow-left"></i> Back to Catalog</a>
+</div>
+
+<div class="row g-4">
+    <div class="col-md-6">
+        <div class="card shadow-sm border-0 p-4 h-100">
+            <h5 class="fw-bold border-bottom pb-2 mb-3"><i class="bi bi-cpu me-2 text-primary"></i> Hardware Specifications</h5>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item d-flex justify-content-between"><span>Processor:</span> <strong>{{ model.processor }}</strong></li>
+                <li class="list-group-item d-flex justify-content-between"><span>RAM:</span> <strong>{{ model.ram }}</strong></li>
+                <li class="list-group-item d-flex justify-content-between"><span>Storage:</span> <strong>{{ model.storage }}</strong></li>
+                <li class="list-group-item d-flex justify-content-between"><span>Display Panel:</span> <strong>{{ model.display }}</strong></li>
+                <li class="list-group-item d-flex justify-content-between"><span>Graphics (GPU):</span> <strong>{{ model.gpu }}</strong></li>
+                <li class="list-group-item d-flex justify-content-between"><span>OS:</span> <strong>{{ model.operating_system }}</strong></li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card shadow-sm border-0 p-4 h-100">
+            <h5 class="fw-bold border-bottom pb-2 mb-3"><i class="bi bi-cash-coin me-2 text-success"></i> Pricing & Stock</h5>
+            <ul class="list-group list-group-flush mb-3">
+                <li class="list-group-item d-flex justify-content-between"><span>MSRP Retail Price:</span> <strong class="text-success fs-5">${{ model.msrp_price }}</strong></li>
+                <li class="list-group-item d-flex justify-content-between"><span>Standard Unit Cost:</span> <strong>${{ model.standard_cost }}</strong></li>
+                <li class="list-group-item d-flex justify-content-between"><span>Available In Stock:</span> <span class="badge bg-success fs-6">{{ model.current_in_stock_count }} Units</span></li>
+            </ul>
+            <p class="text-muted small">{{ model.description|default:"Enterprise business grade laptop with security features and durable chassis." }}</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

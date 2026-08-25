@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}Suppliers - LaptopERP{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h3 class="fw-bold mb-0"><i class="bi bi-truck me-2 text-primary"></i> Supplier & Vendor Directory</h3>
+</div>
+<div class="row g-3">
+    {% for sup in suppliers %}
+    <div class="col-md-4">
+        <div class="card shadow-sm border-0 p-3 h-100">
+            <h5 class="fw-bold text-primary">{{ sup.company_name }}</h5>
+            <p class="text-muted small mb-2"><i class="bi bi-envelope"></i> {{ sup.email }} | <i class="bi bi-telephone"></i> {{ sup.phone }}</p>
+            <p class="mb-1"><strong>Tax / GST ID:</strong> {{ sup.tax_id|default:"N/A" }}</p>
+            <p class="mb-2"><strong>Credit Terms:</strong> {{ sup.payment_terms_days }} Days</p>
+            <span class="badge bg-success align-self-start">Rating: {{ sup.rating_score }} / 5.0</span>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

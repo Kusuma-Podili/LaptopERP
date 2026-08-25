@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}Create User - LaptopERP{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h3 class="fw-bold mb-0">Add New Enterprise User</h3>
+    <a href="{% url 'core:user_list' %}" class="btn btn-outline-secondary btn-sm"><i class="bi bi-arrow-left"></i> Back to Users</a>
+</div>
+<div class="card shadow-sm border-0 p-4">
+    <form method="post">
+        {% csrf_token %}
+        <div class="row g-3">
+            <div class="col-md-6"><label class="form-label fw-bold">Username</label>{{ form.username }}</div>
+            <div class="col-md-6"><label class="form-label fw-bold">Email</label>{{ form.email }}</div>
+            <div class="col-md-6"><label class="form-label fw-bold">First Name</label>{{ form.first_name }}</div>
+            <div class="col-md-6"><label class="form-label fw-bold">Last Name</label>{{ form.last_name }}</div>
+            <div class="col-md-6"><label class="form-label fw-bold">Role (RBAC)</label>{{ form.role }}</div>
+            <div class="col-md-6"><label class="form-label fw-bold">Branch</label>{{ form.branch }}</div>
+            <div class="col-md-6"><label class="form-label fw-bold">Password</label>{{ form.password }}</div>
+        </div>
+        <div class="mt-4">
+            <button type="submit" class="btn btn-primary px-4">Create Enterprise Account</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

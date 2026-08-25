@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Stock Valuation - LaptopERP{% endblock %}
+{% block content %}
+<h3 class="fw-bold mb-4"><i class="bi bi-graph-up me-2 text-primary"></i> Inventory Valuation & Stock Health</h3>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-3">
+        <div class="card p-3 shadow-sm border-0 bg-primary text-white">
+            <h6 class="text-white-50">Total Assets Value</h6>
+            <h3 class="fw-bold">${{ summary.total_valuation }}</h3>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card p-3 shadow-sm border-0 bg-success text-white">
+            <h6 class="text-white-50">Total Serialized Units</h6>
+            <h3 class="fw-bold">{{ summary.total_units }}</h3>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card p-3 shadow-sm border-0 bg-info text-white">
+            <h6 class="text-white-50">Available In Stock</h6>
+            <h3 class="fw-bold">{{ summary.in_stock_units }}</h3>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card p-3 shadow-sm border-0 bg-warning text-dark">
+            <h6 class="text-dark-50">Units in Workshop</h6>
+            <h3 class="fw-bold">{{ summary.in_workshop }}</h3>
+        </div>
+    </div>
+</div>
+{% endblock %}
