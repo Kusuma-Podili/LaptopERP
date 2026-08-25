@@ -7,11 +7,11 @@ db.sqlite3-journal
 media/
 staticfiles/
 
-# Environment and sensitive secrets
+# Environment and sensitive secrets - strictly ignore any .env files
 .env
+.env*
 .env.*
 *.env
-!.env.example
 !example.env
 
 .venv/
