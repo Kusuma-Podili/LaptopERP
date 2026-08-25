@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}Warranty Lookup - LaptopERP{% endblock %}
+{% block content %}
+<h3 class="fw-bold mb-4">Warranty & RMA Lookup</h3>
+<form method="get" class="mb-4">
+    <div class="input-group input-group-lg shadow-sm">
+        <input type="text" name="serial" class="form-control font-monospace" placeholder="Enter Serial Number for Warranty Status" value="{{ request.GET.serial }}">
+        <button class="btn btn-primary px-4" type="submit">Check Warranty</button>
+    </div>
+</form>
+{% if unit %}
+<div class="card shadow-sm border-0 p-4">
+    <h5 class="fw-bold">Hardware Unit: {{ unit.serial_number }}</h5>
+    <p>Model: {{ unit.laptop_model.model_name }}</p>
+    {% if is_valid %}
+        <div class="alert alert-success"><strong>ACTIVE WARRANTY:</strong> Valid until {{ warranty.end_date }} (Policy: {{ warranty.policy.name }})</div>
+    {% else %}
+        <div class="alert alert-danger"><strong>OUT OF WARRANTY / EXPIRED</strong></div>
+    {% endif %}
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}Technician Kanban - LaptopERP{% endblock %}
+{% block content %}
+<h3 class="fw-bold mb-4">Workshop Workflow Kanban</h3>
+<div class="row g-3">
+    <div class="col-md-3">
+        <div class="card bg-light border-0 shadow-sm p-3">
+            <h6 class="fw-bold text-secondary text-uppercase border-bottom pb-2">Queued ({{ queued.count }})</h6>
+            {% for j in queued %}<div class="card p-2 mb-2 border-0 shadow-sm"><small class="fw-bold">{{ j.job_number }}</small><small>{{ j.unit.serial_number }}</small></div>{% endfor %}
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-light border-0 shadow-sm p-3">
+            <h6 class="fw-bold text-primary text-uppercase border-bottom pb-2">In Progress ({{ in_progress.count }})</h6>
+            {% for j in in_progress %}<div class="card p-2 mb-2 border-0 shadow-sm"><small class="fw-bold">{{ j.job_number }}</small><small>{{ j.unit.serial_number }}</small></div>{% endfor %}
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-light border-0 shadow-sm p-3">
+            <h6 class="fw-bold text-warning text-uppercase border-bottom pb-2">QA Testing ({{ qa_testing.count }})</h6>
+            {% for j in qa_testing %}<div class="card p-2 mb-2 border-0 shadow-sm"><small class="fw-bold">{{ j.job_number }}</small><small>{{ j.unit.serial_number }}</small></div>{% endfor %}
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-light border-0 shadow-sm p-3">
+            <h6 class="fw-bold text-success text-uppercase border-bottom pb-2">Completed ({{ completed.count }})</h6>
+            {% for j in completed %}<div class="card p-2 mb-2 border-0 shadow-sm"><small class="fw-bold">{{ j.job_number }}</small><small>{{ j.unit.serial_number }}</small></div>{% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

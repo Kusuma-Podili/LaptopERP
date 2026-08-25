@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block title %}Serial Lifecycle Tracer - LaptopERP{% endblock %}
+{% block content %}
+<h3 class="fw-bold mb-4">Serial Number Lifecycle Tracer</h3>
+<form method="get" class="mb-4">
+    <div class="input-group input-group-lg shadow-sm">
+        <input type="text" name="serial" class="form-control font-monospace" placeholder="Enter Laptop Serial Number (e.g. SN-LEN-7401)" value="{{ request.GET.serial }}">
+        <button class="btn btn-primary px-4" type="submit"><i class="bi bi-search me-1"></i> Trace Unit</button>
+    </div>
+</form>
+
+{% if unit %}
+<div class="card shadow-sm border-0 mb-4">
+    <div class="card-header bg-primary text-white py-3">
+        <h5 class="mb-0">Unit Details: {{ unit.serial_number }} ({{ unit.laptop_model.model_name }})</h5>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-3"><strong>Status:</strong> <span class="badge bg-success">{{ unit.get_status_display }}</span></div>
+            <div class="col-md-3"><strong>Grade:</strong> {{ unit.get_condition_grade_display }}</div>
+            <div class="col-md-3"><strong>Location:</strong> {{ unit.current_location }}</div>
+            <div class="col-md-3"><strong>Battery Health:</strong> {{ unit.battery_health_percentage }}%</div>
+        </div>
+    </div>
+</div>
+
+<h5 class="fw-bold mb-3"><i class="bi bi-clock-history me-1"></i> Lifecycle Audit History</h5>
+<div class="card shadow-sm border-0">
+    <div class="card-body p-0">
+        <table class="table table-striped mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Date & Time</th>
+                    <th>Previous State</th>
+                    <th>New State</th>
+                    <th>Location</th>
+                    <th>Action By</th>
+                    <th>Reference</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for log in history %}
+                <tr>
+                    <td>{{ log.created_at|date:"Y-m-d H:i" }}</td>
+                    <td>{{ log.previous_status }}</td>
+                    <td><span class="badge bg-primary">{{ log.new_status }}</span></td>
+                    <td>{{ log.location }}</td>
+                    <td>{{ log.action_by.username|default:"System" }}</td>
+                    <td>{{ log.reference_document }}</td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="6" class="text-center py-3 text-muted">No state history recorded yet.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% elif not_found %}
+<div class="alert alert-warning">No unit found matching serial number "{{ request.GET.serial }}".</div>
+{% endif %}
+{% endblock %}

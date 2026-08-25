@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %}Serialized Laptop Units - LaptopERP{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h3 class="fw-bold">Serialized Laptop Inventory</h3>
+    <a href="{% url 'inventory:serial_lookup' %}" class="btn btn-outline-primary"><i class="bi bi-search me-1"></i> Serial Tracer</a>
+</div>
+<div class="card shadow-sm border-0">
+    <div class="card-body p-0">
+        <table class="table table-hover mb-0 align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>Serial Number</th>
+                    <th>Model</th>
+                    <th>Status</th>
+                    <th>Condition Grade</th>
+                    <th>Location</th>
+                    <th>Cost</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for unit in units %}
+                <tr>
+                    <td class="fw-bold font-monospace">{{ unit.serial_number }}</td>
+                    <td>{{ unit.laptop_model.model_name }}</td>
+                    <td><span class="badge bg-info text-dark">{{ unit.get_status_display }}</span></td>
+                    <td><span class="badge bg-secondary">{{ unit.get_condition_grade_display }}</span></td>
+                    <td><i class="bi bi-geo-alt me-1 text-danger"></i> {{ unit.current_location }}</td>
+                    <td>${{ unit.purchase_price }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}BI & Analytics - LaptopERP{% endblock %}
+{% block content %}
+<h3 class="fw-bold mb-4">Enterprise Business Intelligence & KPI Analytics</h3>
+<div class="row g-3 mb-4">
+    <div class="col-md-3">
+        <div class="card p-3 shadow-sm border-0 bg-primary text-white">
+            <h6>Total Revenue Collected</h6>
+            <h3 class="fw-bold">${{ kpi.total_revenue }}</h3>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card p-3 shadow-sm border-0 bg-success text-white">
+            <h6>Available In Stock</h6>
+            <h3 class="fw-bold">{{ kpi.active_stock }} Units</h3>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card p-3 shadow-sm border-0 bg-warning text-dark">
+            <h6>Under Active Repair</h6>
+            <h3 class="fw-bold">{{ kpi.in_repairs }} Units</h3>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card p-3 shadow-sm border-0 bg-danger text-white">
+            <h6>Open RMA Tickets</h6>
+            <h3 class="fw-bold">{{ kpi.open_rmas }}</h3>
+        </div>
+    </div>
+</div>
+{% endblock %}

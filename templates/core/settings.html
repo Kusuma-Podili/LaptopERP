@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Settings - LaptopERP{% endblock %}
+{% block content %}
+<h3 class="fw-bold mb-4">Enterprise System Settings & Company Profile</h3>
+<div class="row">
+    <div class="col-md-6">
+        <div class="card shadow-sm border-0 p-4 mb-4">
+            <h5 class="fw-bold border-bottom pb-2">Company Information</h5>
+            <p><strong>Name:</strong> {{ company.name }}</p>
+            <p><strong>Tax Identifier:</strong> {{ company.tax_identifier }}</p>
+            <p><strong>Currency:</strong> {{ company.currency_symbol }} ({{ company.currency_code }})</p>
+            <p><strong>Country:</strong> {{ company.country }}</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
