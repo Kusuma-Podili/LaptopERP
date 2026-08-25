@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    environment:
+      - DJANGO_SECRET_KEY=dev-secret-key-for-containerized-laptoperp
+      - DEBUG=1
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.0
+    container_name: laptoperp_mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: laptoperp_db
+      MYSQL_USER: laptoperp_user
+      MYSQL_PASSWORD: laptoperp_password
+      MYSQL_ROOT_PASSWORD: rootpassword
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:
