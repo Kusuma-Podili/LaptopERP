@@ -3,7 +3,7 @@ name = "laptoperp"
 version = "1.0.0"
 description = "Enterprise Laptop Lifecycle & Hardware ERP Platform"
 authors = ["Kusuma Podili <podilikusuma15@gmail.com>"]
-license = "MIT"
+license = "Proprietary"
 readme = "README.md"
 
 [tool.poetry.dependencies]
