@@ -1,0 +1,63 @@
+{
+  "_meta": {
+    "hash": {
+      "sha256": "4b689a71d8825fc66e7fb62725e25287fbbd3efab2dcda0b73c734898114f25b"
+    },
+    "pipfile-spec": 6,
+    "requires": {
+      "python_version": "3.10"
+    },
+    "sources": [
+      {
+        "name": "pypi",
+        "url": "https://pypi.org/simple",
+        "verify_ssl": true
+      }
+    ]
+  },
+  "default": {
+    "django": {
+      "hashes": [
+        "sha256:d87df92a2a0ff9bbfa037eec5e29783f9829f045bbd697858c42a2202b8004f2"
+      ],
+      "version": "==5.2.17"
+    },
+    "djangorestframework": {
+      "hashes": [
+        "sha256:d9b23b8f1025a1768c8b671a93863484f3c7067d519bcf82e88a08f51a44e6db"
+      ],
+      "version": "==3.18.0"
+    },
+    "django-filter": {
+      "hashes": [
+        "sha256:e6d6d45903b4122d1ce57579ce1c8d06bcf12dfcb67cb402b1f81ceefbe12d09"
+      ],
+      "version": "==26.1"
+    },
+    "pillow": {
+      "hashes": [
+        "sha256:1f77d4c82c3c97e937d1cf6bf9cf57fbb4e2f3d2f2b38038b3215572bbd8e0f4"
+      ],
+      "version": "==12.3.0"
+    },
+    "openpyxl": {
+      "hashes": [
+        "sha256:879f82d2c13e9a7e65e6bb8fbff3c29994c653457173e6f663473950ff4f41b2"
+      ],
+      "version": "==3.1.2"
+    },
+    "reportlab": {
+      "hashes": [
+        "sha256:4a54c34a946b5a8e63b65e9058b8f2d579efab5a1f6498cfbc96bf7e2bf5efc1"
+      ],
+      "version": "==4.0.0"
+    },
+    "qrcode": {
+      "hashes": [
+        "sha256:183955d8a9df61a99859f3e498c8c2018861e604f8ef0e54d6d6780c850239cf"
+      ],
+      "version": "==7.4.2"
+    }
+  },
+  "develop": {}
+}
