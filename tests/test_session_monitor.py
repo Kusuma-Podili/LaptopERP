@@ -1,5 +1,5 @@
 from django.test import TestCase
-from core.services.session_monitor import SecuritySessionMonitor
+from core.services import SecuritySessionMonitor
 
 
 class SessionSecurityTestCase(TestCase):
