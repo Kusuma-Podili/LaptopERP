@@ -7,56 +7,89 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="/static/css/erp_theme.css">
+    <style>
+        body { background-color: #f1f5f9; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        #sidebar-wrapper { min-width: 250px; max-width: 250px; min-height: 100vh; background-color: #ffffff; }
+        .sidebar-section-title { font-size: 0.70rem; letter-spacing: 0.08em; color: #64748b; font-weight: 700; padding: 0.85rem 1.25rem 0.35rem; }
+        .list-group-item { border: none; padding: 0.65rem 1.25rem; font-size: 0.90rem; color: #334155; border-radius: 8px; margin: 2px 10px; font-weight: 500; transition: all 0.15s ease-in-out; }
+        .list-group-item:hover { background-color: #f8fafc; color: #0284c7; transform: translateX(3px); }
+        .list-group-item.active { background-color: #e0f2fe; color: #0284c7; font-weight: 600; }
+    </style>
     {% block extra_css %}{% endblock %}
 </head>
 <body>
+    {% if user.is_authenticated %}
     <div class="d-flex" id="wrapper">
-        <!-- Sidebar Navigation -->
-        <div class="bg-dark text-white border-end" id="sidebar-wrapper">
-            <div class="sidebar-heading border-bottom bg-dark py-3 px-3 d-flex align-items-center">
-                <i class="bi bi-laptop fs-4 me-2 text-primary"></i>
-                <span class="fw-bold fs-5 tracking-wide">LaptopERP</span>
+        <!-- Role-Specific Sidebar Navigation (Crisp White Interface) -->
+        <div class="bg-white text-dark border-end shadow-sm" id="sidebar-wrapper">
+            <div class="sidebar-heading border-bottom bg-white py-3 px-3 d-flex align-items-center">
+                <div class="p-2 bg-primary-subtle text-primary rounded-3 me-2 d-flex align-items-center justify-content-center" style="width: 36px; height: 36px;">
+                    <i class="bi bi-laptop fs-5"></i>
+                </div>
+                <div>
+                    <span class="fw-bold fs-5 text-dark tracking-wide d-block lh-1">LaptopERP</span>
+                    <small class="text-muted" style="font-size: 0.70rem;">Enterprise Lifecycle</small>
+                </div>
             </div>
-            <div class="list-group list-group-flush">
-                <a href="{% url 'core:dashboard' %}" class="list-group-item list-group-item-action bg-dark text-light"><i class="bi bi-speedometer2 me-2"></i> Executive Dashboard</a>
-                <a href="{% url 'inventory:model_list' %}" class="list-group-item list-group-item-action bg-dark text-light"><i class="bi bi-cpu me-2"></i> Laptop Catalog</a>
-                <a href="{% url 'inventory:unit_list' %}" class="list-group-item list-group-item-action bg-dark text-light"><i class="bi bi-upc-scan me-2"></i> Serial Numbers</a>
-                <a href="{% url 'warehouse:warehouse_list' %}" class="list-group-item list-group-item-action bg-dark text-light"><i class="bi bi-building me-2"></i> Warehouses & Bins</a>
-                <a href="{% url 'procurement:po_list' %}" class="list-group-item list-group-item-action bg-dark text-light"><i class="bi bi-cart-check me-2"></i> Procurement & POs</a>
-                <a href="{% url 'repairs:job_card_list' %}" class="list-group-item list-group-item-action bg-dark text-light"><i class="bi bi-tools me-2"></i> Workshop Repairs</a>
-                <a href="{% url 'sales:order_list' %}" class="list-group-item list-group-item-action bg-dark text-light"><i class="bi bi-receipt me-2"></i> Sales & Invoicing</a>
-                <a href="{% url 'warranty:warranty_lookup' %}" class="list-group-item list-group-item-action bg-dark text-light"><i class="bi bi-shield-check me-2"></i> Warranty & RMA</a>
-                <a href="{% url 'analytics:executive_dashboard' %}" class="list-group-item list-group-item-action bg-dark text-light"><i class="bi bi-graph-up-arrow me-2"></i> Business Analytics</a>
-                <a href="{% url 'core:audit_logs' %}" class="list-group-item list-group-item-action bg-dark text-light"><i class="bi bi-journal-text me-2"></i> Audit Trails</a>
-                <a href="{% url 'core:settings' %}" class="list-group-item list-group-item-action bg-dark text-light"><i class="bi bi-gear me-2"></i> ERP Settings</a>
+            
+            <div class="list-group list-group-flush pt-3">
+                {% if user.is_superuser or user.role.code == 'ADMIN' %}
+                    <!-- ADMIN & EXECUTIVE NAVIGATION -->
+                    <div class="sidebar-section-title text-uppercase">Executive & Operations</div>
+                    <a href="{% url 'core:dashboard' %}" class="list-group-item list-group-item-action bg-white text-dark"><i class="bi bi-speedometer2 me-2 text-primary"></i> Executive Dashboard</a>
+                    <a href="{% url 'inventory:model_list' %}" class="list-group-item list-group-item-action bg-white text-dark"><i class="bi bi-cpu me-2 text-info"></i> Laptop Catalog</a>
+                    <a href="{% url 'inventory:unit_list' %}" class="list-group-item list-group-item-action bg-white text-dark"><i class="bi bi-upc-scan me-2 text-primary"></i> Serial Inventory</a>
+                    <a href="{% url 'warehouse:warehouse_list' %}" class="list-group-item list-group-item-action bg-white text-dark"><i class="bi bi-building me-2 text-warning"></i> Warehouses & Bins</a>
+                    <a href="{% url 'procurement:po_list' %}" class="list-group-item list-group-item-action bg-white text-dark"><i class="bi bi-cart-check me-2 text-warning"></i> Procurement & POs</a>
+                    <a href="{% url 'sales:order_list' %}" class="list-group-item list-group-item-action bg-white text-dark"><i class="bi bi-receipt me-2 text-success"></i> Sales & Invoicing</a>
+                    <a href="{% url 'warranty:warranty_lookup' %}" class="list-group-item list-group-item-action bg-white text-dark"><i class="bi bi-shield-check me-2 text-success"></i> Warranty & RMA</a>
+                    
+                    <div class="sidebar-section-title text-uppercase mt-2">Governance & Team</div>
+                    <a href="{% url 'core:user_list' %}" class="list-group-item list-group-item-action bg-white text-dark"><i class="bi bi-people me-2 text-primary"></i> User Access</a>
+                    <a href="{% url 'core:audit_logs' %}" class="list-group-item list-group-item-action bg-white text-dark"><i class="bi bi-journal-text me-2 text-secondary"></i> Security Audit Logs</a>
+                    <a href="{% url 'core:settings' %}" class="list-group-item list-group-item-action bg-white text-dark"><i class="bi bi-gear me-2 text-secondary"></i> ERP Settings</a>
+                
+                {% elif user.is_technician or user.role.code == 'TECHNICIAN_SENIOR' or user.role.code == 'TECHNICIAN' %}
+                    <!-- TECHNICIAN WORKBENCH NAVIGATION -->
+                    <div class="sidebar-section-title text-uppercase">Diagnostic & Repair Tools</div>
+                    <a href="{% url 'core:dashboard' %}" class="list-group-item list-group-item-action bg-white text-dark"><i class="bi bi-tools me-2 text-primary"></i> Repair Workbench</a>
+                    <a href="{% url 'repairs:job_card_list' %}" class="list-group-item list-group-item-action bg-white text-dark"><i class="bi bi-card-checklist me-2 text-primary"></i> Active Job Cards</a>
+                    <a href="{% url 'repairs:technician_board' %}" class="list-group-item list-group-item-action bg-white text-dark"><i class="bi bi-kanban me-2 text-info"></i> Workshop Kanban</a>
+                    <a href="{% url 'inventory:serial_lookup' %}" class="list-group-item list-group-item-action bg-white text-dark"><i class="bi bi-search me-2 text-success"></i> Hardware Diagnostics</a>
+                    <a href="{% url 'inventory:unit_list' %}" class="list-group-item list-group-item-action bg-white text-dark"><i class="bi bi-box-seam me-2 text-secondary"></i> Spare Parts Stock</a>
+                
+                {% else %}
+                    <!-- DEFAULT / GENERAL NAVIGATION -->
+                    <a href="{% url 'core:dashboard' %}" class="list-group-item list-group-item-action bg-white text-dark"><i class="bi bi-speedometer2 me-2"></i> Dashboard</a>
+                    <a href="{% url 'inventory:model_list' %}" class="list-group-item list-group-item-action bg-white text-dark"><i class="bi bi-cpu me-2"></i> Laptop Catalog</a>
+                    <a href="{% url 'inventory:unit_list' %}" class="list-group-item list-group-item-action bg-white text-dark"><i class="bi bi-upc-scan me-2"></i> Serial Numbers</a>
+                {% endif %}
             </div>
         </div>
 
-        <!-- Page Content -->
-        <div id="page-content-wrapper" class="w-100 bg-light">
+        <!-- Page Content Wrapper -->
+        <div id="page-content-wrapper" class="w-100 bg-light min-vh-100 d-flex flex-column">
             <!-- Top Navbar -->
-            <nav class="navbar navbar-expand-lg navbar-white bg-white border-bottom px-4 py-2">
+            <nav class="navbar navbar-expand-lg navbar-white bg-white border-bottom px-4 py-2 shadow-sm">
                 <div class="container-fluid">
                     <span class="navbar-text fw-semibold text-secondary">
-                        <i class="bi bi-buildings me-1"></i> {{ ERP_COMPANY.name|default:"LaptopERP Enterprise" }}
+                        <i class="bi bi-buildings me-1 text-primary"></i> {{ ERP_COMPANY.name|default:"LaptopERP Enterprise" }}
                     </span>
                     <div class="d-flex align-items-center ms-auto">
-                        {% if user.is_authenticated %}
-                            <span class="badge bg-primary me-3">{{ user.role.name|default:"Operator" }}</span>
-                            <span class="me-3 text-dark fw-medium">{{ user.get_full_name|default:user.username }}</span>
-                            <form action="{% url 'core:logout' %}" method="post" class="d-inline">
-                                {% csrf_token %}
-                                <button type="submit" class="btn btn-outline-danger btn-sm"><i class="bi bi-box-arrow-right"></i> Logout</button>
-                            </form>
-                        {% else %}
-                            <a href="{% url 'core:login' %}" class="btn btn-primary btn-sm">Login</a>
-                        {% endif %}
+                        <span class="badge {% if user.is_superuser %}bg-dark{% elif user.is_technician %}bg-warning text-dark{% else %}bg-primary{% endif %} me-3 px-2 py-1">
+                            {% if user.is_superuser %}👑 Administrator{% elif user.is_technician %}🛠️ Technician{% else %}{{ user.role.name|default:"Operator" }}{% endif %}
+                        </span>
+                        <span class="me-3 text-dark fw-semibold">{{ user.get_full_name|default:user.username }}</span>
+                        <form action="{% url 'core:logout' %}" method="post" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-outline-danger btn-sm px-3"><i class="bi bi-box-arrow-right me-1"></i> Logout</button>
+                        </form>
                     </div>
                 </div>
             </nav>
 
             <!-- Main Content Container -->
-            <div class="container-fluid p-4">
+            <div class="container-fluid p-4 flex-grow-1">
                 {% if messages %}
                     {% for message in messages %}
                         <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show" role="alert">
@@ -70,6 +103,15 @@
             </div>
         </div>
     </div>
+
+    {% else %}
+    <!-- Clean, Focused Login Page View (NO Sidebar, NO Topbar) -->
+    <div class="min-vh-100 d-flex align-items-center justify-content-center bg-light py-5">
+        <div class="container">
+            {% block unauth_content %}{% endblock %}
+        </div>
+    </div>
+    {% endif %}
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

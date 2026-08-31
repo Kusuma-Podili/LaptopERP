@@ -28,14 +28,44 @@ class EnterpriseLoginView(LoginView):
 
 
 class DashboardView(LoginRequiredMixin, TemplateView):
-    template_name = 'core/dashboard.html'
+    def get_template_names(self):
+        user = self.request.user
+        if getattr(user, 'is_technician', False) or (user.role and user.role.code in ['TECHNICIAN_SENIOR', 'TECHNICIAN']):
+            return ['repairs/technician_workbench.html']
+        return ['core/dashboard.html']
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
         user = self.request.user
-        ctx['total_users'] = User.objects.filter(is_active=True).count()
-        ctx['recent_audit_logs'] = AuditLog.objects.select_related('user').all()[:10]
-        ctx['notifications'] = Notification.objects.filter(recipient=user, is_read=False)[:5]
+        
+        # Technician Role Context
+        if getattr(user, 'is_technician', False) or (user.role and user.role.code in ['TECHNICIAN_SENIOR', 'TECHNICIAN']):
+            from repairs.models import WorkshopJobCard
+            my_jobs = WorkshopJobCard.objects.filter(assigned_technician=user)
+            ctx['in_diagnostics'] = my_jobs.filter(status='IN_DIAGNOSTICS').count()
+            ctx['in_repair'] = my_jobs.filter(status='REPAIR_IN_PROGRESS').count()
+            ctx['waiting_parts'] = my_jobs.filter(status='WAITING_PARTS').count()
+            ctx['completed_today'] = my_jobs.filter(status='COMPLETED').count()
+            ctx['all_active_jobs'] = WorkshopJobCard.objects.filter(
+                status__in=['QUEUED', 'IN_DIAGNOSTICS', 'REPAIR_IN_PROGRESS', 'WAITING_PARTS']
+            ).select_related('unit', 'unit__laptop_model')[:10]
+        else:
+            # Executive / Admin Role Context
+            from inventory.models import LaptopUnit
+            from repairs.models import WorkshopJobCard
+            from sales.models import Invoice
+            from django.db.models import Sum
+            
+            ctx['total_users'] = User.objects.filter(is_active=True).count()
+            ctx['total_units'] = LaptopUnit.objects.count()
+            ctx['in_stock_units'] = LaptopUnit.objects.filter(status='IN_STOCK').count()
+            ctx['active_repairs'] = WorkshopJobCard.objects.filter(status__in=['IN_DIAGNOSTICS', 'REPAIR_IN_PROGRESS']).count()
+            
+            val = LaptopUnit.objects.filter(status='IN_STOCK').aggregate(total=Sum('selling_price'))['total']
+            ctx['stock_valuation'] = val if val else '0.00'
+            
+            ctx['recent_audit_logs'] = AuditLog.objects.select_related('user').all()[:8]
+            ctx['notifications'] = Notification.objects.filter(recipient=user, is_read=False)[:5]
         return ctx
 
 

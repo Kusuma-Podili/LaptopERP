@@ -1,27 +1,74 @@
 {% extends 'base.html' %}
-{% block title %}Login - LaptopERP Enterprise{% endblock %}
-{% block content %}
-<div class="row justify-content-center mt-5">
-    <div class="col-md-4">
-        <div class="card shadow-sm border-0">
-            <div class="card-header bg-primary text-white py-3 text-center">
-                <h4 class="mb-0"><i class="bi bi-laptop me-2"></i> Enterprise Portal</h4>
+{% block title %}Sign In - LaptopERP Enterprise{% endblock %}
+{% block unauth_content %}
+<div class="row justify-content-center">
+    <div class="col-11 col-sm-9 col-md-6 col-lg-5 col-xl-4">
+        <!-- Brand Header -->
+        <div class="text-center mb-4">
+            <div class="d-inline-flex align-items-center justify-content-center bg-primary text-white rounded-circle shadow-sm mb-3" style="width: 60px; height: 60px;">
+                <i class="bi bi-laptop fs-2"></i>
             </div>
-            <div class="card-body p-4">
-                <form method="post">
+            <h3 class="fw-bold text-dark mb-1">LaptopERP</h3>
+            <p class="text-muted small">Enterprise Hardware Lifecycle Management Platform</p>
+        </div>
+
+        <!-- Login Card (Crisp White Interface) -->
+        <div class="card shadow-sm border rounded-4 overflow-hidden bg-white">
+            <div class="card-header bg-white border-bottom text-dark text-center py-3">
+                <h5 class="mb-0 fw-bold text-dark"><i class="bi bi-shield-lock me-2 text-primary"></i> Secure Portal Login</h5>
+            </div>
+            <div class="card-body p-4 bg-white">
+                {% if form.errors %}
+                <div class="alert alert-danger py-2 px-3 small rounded-3 mb-3">
+                    <i class="bi bi-exclamation-triangle-fill me-1"></i> Invalid username or password. Please try again.
+                </div>
+                {% endif %}
+
+                <form method="post" id="loginForm">
                     {% csrf_token %}
                     <div class="mb-3">
-                        <label class="form-label fw-bold">Username</label>
-                        {{ form.username }}
+                        <label class="form-label fw-semibold text-secondary small">Username / Employee ID</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-end-0 text-muted"><i class="bi bi-person"></i></span>
+                            <input type="text" name="username" id="id_username" class="form-control border-start-0 ps-0" placeholder="e.g. admin or tech_alex" required autofocus>
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Password</label>
-                        {{ form.password }}
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold text-secondary small">Password</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-end-0 text-muted"><i class="bi bi-key"></i></span>
+                            <input type="password" name="password" id="id_password" class="form-control border-start-0 ps-0" placeholder="••••••••••••" required>
+                        </div>
                     </div>
-                    <button type="submit" class="btn btn-primary w-100 py-2 fw-semibold">Sign In to ERP</button>
+                    <button type="submit" class="btn btn-primary w-100 py-2 fw-semibold rounded-3 shadow-sm mb-3">
+                        <i class="bi bi-box-arrow-in-right me-1"></i> Sign In to ERP
+                    </button>
                 </form>
+
+                <!-- Quick Fill Persona Helper for Testing -->
+                <div class="border-top pt-3 mt-2">
+                    <div class="text-muted text-center small mb-2 fw-semibold">Quick Demo Login:</div>
+                    <div class="d-grid gap-2 d-flex justify-content-center">
+                        <button type="button" class="btn btn-outline-dark btn-sm rounded-pill px-3" onclick="fillCredentials('admin', 'AdminPass123!')">
+                            👑 Admin
+                        </button>
+                        <button type="button" class="btn btn-outline-warning text-dark btn-sm rounded-pill px-3" onclick="fillCredentials('tech_alex', 'TechPass123!')">
+                            🛠️ Technician
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer bg-light py-2 text-center text-muted small">
+                <i class="bi bi-lock-fill me-1 text-success"></i> 256-Bit Encrypted Enterprise RBAC Session
             </div>
         </div>
     </div>
 </div>
+
+<script>
+function fillCredentials(u, p) {
+    document.getElementById('id_username').value = u;
+    document.getElementById('id_password').value = p;
+}
+</script>
 {% endblock %}

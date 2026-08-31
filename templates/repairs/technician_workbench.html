@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+{% block title %}Technician Workbench - LaptopERP{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h3 class="fw-bold mb-1"><i class="bi bi-tools text-primary me-2"></i> Hardware Technician Workbench</h3>
+        <p class="text-muted mb-0">Welcome back, <strong>{{ user.get_full_name|default:user.username }}</strong> &bull; Diagnostic & Repair Center</p>
+    </div>
+    <div class="d-flex gap-2">
+        <a href="{% url 'inventory:serial_lookup' %}" class="btn btn-outline-primary btn-sm"><i class="bi bi-search me-1"></i> Quick Serial Lookup</a>
+        <a href="{% url 'repairs:job_card_list' %}" class="btn btn-primary btn-sm"><i class="bi bi-card-checklist me-1"></i> View All Job Cards</a>
+    </div>
+</div>
+
+<!-- 4 Key Technician Metrics -->
+<div class="row g-3 mb-4">
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm bg-primary text-white p-3">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h6 class="text-white-50 text-uppercase fw-semibold small mb-1">In Diagnostics</h6>
+                    <h2 class="fw-bold mb-0">{{ in_diagnostics }}</h2>
+                </div>
+                <i class="bi bi-cpu fs-1 text-white-50"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm bg-warning text-dark p-3">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h6 class="text-dark-50 text-uppercase fw-semibold small mb-1">In Active Repair</h6>
+                    <h2 class="fw-bold mb-0">{{ in_repair }}</h2>
+                </div>
+                <i class="bi bi-wrench-adjustable fs-1 text-dark-50"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm bg-info text-white p-3">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h6 class="text-white-50 text-uppercase fw-semibold small mb-1">Waiting on Parts</h6>
+                    <h2 class="fw-bold mb-0">{{ waiting_parts }}</h2>
+                </div>
+                <i class="bi bi-hourglass-split fs-1 text-white-50"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm bg-success text-white p-3">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h6 class="text-white-50 text-uppercase fw-semibold small mb-1">Completed / QC Passed</h6>
+                    <h2 class="fw-bold mb-0">{{ completed_today }}</h2>
+                </div>
+                <i class="bi bi-check2-circle fs-1 text-white-50"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Diagnostic Tool -->
+<div class="card border-0 shadow-sm mb-4">
+    <div class="card-body p-4 bg-white rounded">
+        <div class="row align-items-center">
+            <div class="col-md-7">
+                <h5 class="fw-bold text-dark mb-1"><i class="bi bi-upc-scan text-primary me-2"></i> Instant Hardware Diagnostic Lookup</h5>
+                <p class="text-muted small mb-md-0">Enter or scan any laptop serial number to verify hardware specs, battery health, and test history.</p>
+            </div>
+            <div class="col-md-5">
+                <form action="{% url 'inventory:serial_lookup' %}" method="get" class="d-flex gap-2">
+                    <input type="text" name="serial" class="form-control" placeholder="e.g. SN-LEN-T14-1001" required>
+                    <button type="submit" class="btn btn-primary px-4 fw-medium">Diagnose</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Active Jobs on My Workbench -->
+<div class="card border-0 shadow-sm mb-4">
+    <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center">
+        <h5 class="mb-0 fw-bold"><i class="bi bi-clipboard-pulse text-primary me-2"></i> Active Repair Queue & Job Cards</h5>
+        <a href="{% url 'repairs:technician_board' %}" class="btn btn-sm btn-outline-primary"><i class="bi bi-kanban me-1"></i> Open Kanban Board</a>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Job #</th>
+                        <th>Laptop Unit / Model</th>
+                        <th>Reported Issue</th>
+                        <th>Priority</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for job in all_active_jobs %}
+                    <tr>
+                        <td class="fw-bold font-monospace text-primary">{{ job.job_number }}</td>
+                        <td>
+                            <strong>{{ job.unit.serial_number }}</strong>
+                            <div class="small text-muted">{{ job.unit.laptop_model.model_name }}</div>
+                        </td>
+                        <td><small class="text-muted">{{ job.customer_reported_issue|default:"General hardware refurbishment and thermal check"|truncatechars:55 }}</small></td>
+                        <td>
+                            {% if job.priority == 'URGENT' %}
+                                <span class="badge bg-danger">URGENT</span>
+                            {% elif job.priority == 'HIGH' %}
+                                <span class="badge bg-warning text-dark">HIGH</span>
+                            {% else %}
+                                <span class="badge bg-secondary">{{ job.priority }}</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if job.status == 'IN_DIAGNOSTICS' %}
+                                <span class="badge bg-primary">In Diagnostics</span>
+                            {% elif job.status == 'REPAIR_IN_PROGRESS' %}
+                                <span class="badge bg-warning text-dark">Repair in Progress</span>
+                            {% elif job.status == 'WAITING_PARTS' %}
+                                <span class="badge bg-info text-dark">Waiting Parts</span>
+                            {% else %}
+                                <span class="badge bg-light text-dark border">{{ job.get_status_display }}</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{% url 'repairs:job_card_detail' job.id %}" class="btn btn-sm btn-outline-secondary"><i class="bi bi-eye"></i> Details</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center py-4 text-muted">
+                            <i class="bi bi-check-circle text-success fs-3 d-block mb-1"></i>
+                            No pending repairs in queue. Great job!
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
